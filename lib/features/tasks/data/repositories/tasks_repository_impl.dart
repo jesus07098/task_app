@@ -12,11 +12,6 @@ class TasksRepositoryImpl implements TasksRepository {
   TasksRepositoryImpl(this._tasksLocalDataSource);
 
   @override
-  Future<DataState> createTask(TaskDto task) async {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> deleteTaskById(String id) {
     throw UnimplementedError();
   }
@@ -34,4 +29,21 @@ class TasksRepositoryImpl implements TasksRepository {
       return DataFailed(e.toString());
     }
   }
+
+  @override
+  Future<DataState<Task>> createTask(TaskDto task) async {
+    try {
+      final result = await _tasksLocalDataSource.createTask(task);
+
+      return DataSuccess(result.data?.toTask());
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
 }
+
+
+  // @override
+  // Future<DataState> createTask(TaskDto task) async {
+  //   throw UnimplementedError();
+  // }

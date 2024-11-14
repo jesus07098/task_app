@@ -9,7 +9,7 @@ part 'task_dto.g.dart';
 class TaskDto {
   Id? id;
   final String title;
-  final bool isCompleted;
+  final bool? isCompleted;
   final String? description;
 
   TaskDto({
@@ -21,7 +21,7 @@ class TaskDto {
   factory TaskDto.fromJson(Map<String, dynamic> json) => TaskDto(
         title: json["title"],
         description: json["description"],
-        isCompleted: json["isCompleted"],
+        isCompleted: json["isCompleted"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {

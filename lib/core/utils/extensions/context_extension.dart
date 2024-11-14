@@ -4,7 +4,9 @@ import '../../../shared/presentation/ui/foundations/colors_foundation.dart';
 import '../../../shared/presentation/ui/tokens/app_sizes.dart';
 
 extension ExtendedContext on BuildContext {
-  // BottomSheets
+  ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
+
+  //Mostrar BottomSheets
   showModalBottomSheetCustom(
       {ShapeBorder? shape,
       required Widget widget,
@@ -23,5 +25,16 @@ extension ExtendedContext on BuildContext {
             ),
           ),
     );
+  }
+  
+   //Mostrar SnackBar
+  ScaffoldFeatureController showSnackbar(SnackBar snackBar,
+      {AnimationStyle? snackBarAnimationStyle}) {
+    return scaffoldMessenger.showSnackBar(snackBar,
+        snackBarAnimationStyle: snackBarAnimationStyle);
+  }
+
+  void hideSnackBar() {
+    return scaffoldMessenger.hideCurrentSnackBar();
   }
 }

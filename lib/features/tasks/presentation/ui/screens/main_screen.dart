@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_app/core/utils/extensions/context_extension.dart';
 import 'package:task_app/features/tasks/presentation/blocs/tasks/task_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,8 @@ import 'package:task_app/features/tasks/presentation/ui/molecules/draggable_head
 import 'package:task_app/shared/presentation/ui/atoms/textformfield_custom.dart';
 import 'package:task_app/shared/presentation/ui/atoms/textformfield_multiline.dart';
 
+import '../../../../../shared/presentation/ui/molecules/filled_button_custom.dart';
+import '../../../../../shared/presentation/ui/molecules/snackbar_custom.dart';
 import '../../../../../shared/presentation/ui/ui.dart';
 import '../atoms/label.dart';
 
@@ -46,42 +50,84 @@ class _MainScreenState extends State<MainScreen> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               context.showModalBottomSheetCustom(
-                  widget: DraggableScrollableSheet(
+                  widget: BlocConsumer<TaskBloc, TaskState>(
+                listener: (context, state) {
+                  if (state.message == '') {
+                    return;
+                  }
+                  if (state.formStatus == FormzSubmissionStatus.success) {
+                    context.showSnackbar(SnackBarCustom.snackBar(state.message,
+                        type: SnackBarType.success));
+                  } else if (state.formStatus ==
+                          FormzSubmissionStatus.canceled ||
+                      state.formStatus == FormzSubmissionStatus.failure) {
+                    context.showSnackbar(SnackBarCustom.snackBar(state.message,
+                        type: SnackBarType.error));
+                  }
+                },
+                builder: (context, state) {
+                  return DraggableScrollableSheet(
                       minChildSize: 0.8,
                       initialChildSize: 0.8,
                       maxChildSize: 0.8,
                       expand: false,
-                      builder: (context, scrollController) => const Column(
+                      builder: (context, scrollController) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              DraggableHeaderGeneral(
+                              const DraggableHeaderGeneral(
                                 title: 'Agregar Nota',
                                 centerTitle: false,
                               ),
                               Expanded(
                                   child: Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: AppSizes.s16),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          LabelField(
+                                          const LabelField(
                                             text: 'Título',
                                             isRequiredField: true,
                                           ),
-                                          TextFormFieldCustom(),
-                                          SizedBox(
+                                          TextFormFieldCustom(
+                                            errorText: state.isFormPosted
+                                                ? state.title.errorMessage
+                                                : null,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<TaskBloc>()
+                                                  .add(OnTitleChange(value));
+                                            },
+                                          ),
+                                          const SizedBox(
                                             height: AppSizes.s10,
                                           ),
-                                          LabelField(
+                                          const LabelField(
                                             text: 'Descripción',
                                           ),
-                                           TextFormFieldArea(),
+                                          const TextFormFieldArea(),
                                         ],
                                       ))),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: AppSizes.s18,
+                                      left: AppSizes.s16,
+                                      right: AppSizes.s16),
+                                  child: FilledButtonCustom(
+                                    label: 'Crear Nota',
+                                    action: () {
+                                      context
+                                          .read<TaskBloc>()
+                                          .add(OnCreateTask());
+
+                                      context.pop();
+                                    },
+                                  ))
                             ],
-                          )));
+                          ));
+                },
+              ));
             },
             tooltip: 'Add Task',
             child: const Icon(Icons.add),

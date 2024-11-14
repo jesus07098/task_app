@@ -4,7 +4,7 @@
 class Task {
   final String title;
   final String? description;
-  final bool isCompleted;
+  final bool? isCompleted;
 
    Task({
 
