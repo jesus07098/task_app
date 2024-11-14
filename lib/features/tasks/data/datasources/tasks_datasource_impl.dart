@@ -1,6 +1,5 @@
-
-
-
+import 'package:isar/isar.dart';
+import 'package:task_app/core/config/plugins/isar_plugin.dart';
 import 'package:task_app/core/utils/resources/data_state.dart';
 
 import 'package:task_app/features/tasks/data/DTOs/task_dto.dart';
@@ -23,8 +22,12 @@ class TasksDatasourceImpl implements TasksDatasource {
   }
 
   @override
-  Future<DataState<Task>> getTask() {
-    // TODO: implement getTask
-    throw UnimplementedError();
+  Future<DataState<List<Task>>> getTasks() async {
+    try {
+      final result = await IsarPlugin.instance.tasks.where().findAll();
+      return DataSuccess(result);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
   }
 }

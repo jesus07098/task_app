@@ -16,7 +16,7 @@ class TaskRepositoryImpl implements TasksRepository {
   @override
   Future<DataState> createTask(TaskDto task) async{
       try {
-      var result = await _tasksLocalDataSource.createTask(TaskDto(title: '', isCompleted:true));
+      var result = await _tasksLocalDataSource.createTask(TaskDto(title: 'prueba', isCompleted:true));
       return DataSuccess(result);
     } catch (e) {
       return DataFailed(e.toString());
@@ -30,7 +30,7 @@ class TaskRepositoryImpl implements TasksRepository {
   }
 
   @override
-  Future<DataState<Task>> getTask() {
+  Future<DataState<List<Task>>> getTasks() {
     // TODO: implement getTask
     throw UnimplementedError();
   }

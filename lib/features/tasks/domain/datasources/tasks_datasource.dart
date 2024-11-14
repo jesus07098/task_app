@@ -1,10 +1,9 @@
-
 import '../../../../core/utils/resources/data_state.dart';
 import '../../data/DTOs/task_dto.dart';
 import '../entities/task.dart';
 
 abstract class TasksDatasource {
-  Future<DataState<Task>> getTask();
+  Future<DataState<List<Task>>> getTasks();
   Future<DataState> createTask(TaskDto task);
   Future<void> deleteTaskById(String id);
 }
