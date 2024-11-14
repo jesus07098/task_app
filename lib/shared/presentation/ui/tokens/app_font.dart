@@ -4,7 +4,7 @@ import 'app_sizes.dart';
 
 class AppFont {
   // Font Families
-  static String? fontFamily = 'DM-Sans';
+  static String? fontFamily = 'Gilroy';
 
   //Font Weight
   static const FontWeight weightLight = FontWeight.w300;
@@ -21,7 +21,6 @@ class AppFont {
       Color? color,
       double? letterSpacing,
       double? height,
-      
       TextOverflow? overflow) {
     return TextStyle(
         overflow: overflow,

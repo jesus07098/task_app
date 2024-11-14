@@ -1,14 +1,20 @@
+import 'package:isar/isar.dart';
 
 import '../../domain/entities/task.dart';
 
+part 'task_dto.g.dart';
+
+
+@Collection()
 class TaskDto {
+  Id? id;
   final String title;
   final bool isCompleted;
   final String? description;
 
   TaskDto({
     required this.title,
-    required this.isCompleted,  
+    required this.isCompleted,
     this.description,
   });
 
@@ -30,6 +36,7 @@ class TaskDto {
         isCompleted: isCompleted,
         description: description,
       );
+
 
   factory TaskDto.fromTask(Task task) => TaskDto(
         title: task.title,

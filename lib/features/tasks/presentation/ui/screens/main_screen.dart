@@ -1,30 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/features/tasks/data/DTOs/task_dto.dart';
+import 'package:task_app/core/utils/extensions/context_extension.dart';
+import 'package:task_app/features/tasks/presentation/blocs/tasks/task_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_app/features/tasks/presentation/ui/molecules/draggable_header_general.dart';
 
-import '../../../data/datasources/tasks_datasource_impl.dart';
+import '../../../../../shared/presentation/ui/ui.dart';
+import '../atoms/label.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key, required this.title});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
-  final String title;
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    context.read<TaskBloc>().add(OnGetTask());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
-      ),
-      body: const Column(
-        children: [],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-         TasksDatasourceImpl().createTask(TaskDto(title: 'afasf', isCompleted: true));
-        },
-        tooltip: 'Add Task',
-        child: const Icon(Icons.add),
-      ),
+    return BlocBuilder<TaskBloc, TaskState>(
+      builder: (_, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Tasky',
+            ),
+          ),
+          body: ListView.builder(
+              itemCount: state.tasks.length,
+              itemBuilder: (context, i) => CheckboxListTile.adaptive(
+                    onChanged: (v) {},
+                    title: Text(state.tasks[i].title.toString(),
+                        style: const TextStyle(color: Colors.black)),
+                    subtitle: Text(state.tasks[i].description.toString(),
+                        style: const TextStyle(color: Colors.black)),
+                    value: state.tasks[i].isCompleted,
+                  )),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              context.showModalBottomSheetCustom(
+                  widget: DraggableScrollableSheet(
+                      minChildSize: 0.5,
+                      initialChildSize: 0.5,
+                      maxChildSize: 0.5,
+                      expand: false,
+                      builder: (context, scrollController) => const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DraggableHeaderGeneral(
+                                title: 'Agregar Nota',
+                                centerTitle: false,
+                              ),
+                              Expanded(
+                                  child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: AppSizes.s16),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          LabelField(
+                                            text: 'Title',
+                                            isRequiredField: true,
+                                          ),
+                                          LabelField(
+                                            text: 'Descripción',
+                                          )
+                                        ],
+                                      ))),
+                            ],
+                          )));
+            },
+            tooltip: 'Add Task',
+            child: const Icon(Icons.add),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,3 @@
-
-
 import 'package:task_app/core/utils/resources/data_state.dart';
 
 import 'package:task_app/features/tasks/data/DTOs/task_dto.dart';
@@ -9,29 +7,31 @@ import 'package:task_app/features/tasks/domain/entities/task.dart';
 
 import '../../domain/repositories/tasks_repository.dart';
 
-class TaskRepositoryImpl implements TasksRepository {
+class TasksRepositoryImpl implements TasksRepository {
   final TasksDatasource _tasksLocalDataSource;
-  TaskRepositoryImpl(this._tasksLocalDataSource);
+  TasksRepositoryImpl(this._tasksLocalDataSource);
 
   @override
-  Future<DataState> createTask(TaskDto task) async{
-      try {
-      var result = await _tasksLocalDataSource.createTask(TaskDto(title: 'prueba', isCompleted:true));
-      return DataSuccess(result);
-    } catch (e) {
-      return DataFailed(e.toString());
-    }
+  Future<DataState> createTask(TaskDto task) async {
+    throw UnimplementedError();
   }
 
   @override
   Future<void> deleteTaskById(String id) {
-    // TODO: implement deleteTaskById
     throw UnimplementedError();
   }
 
   @override
-  Future<DataState<List<Task>>> getTasks() {
-    // TODO: implement getTask
-    throw UnimplementedError();
+  Future<DataState<List<Task>>> getTasks() async {
+    try {
+      final List<TaskDto> result = await _tasksLocalDataSource.getTasks();
+
+      final List<Task> tasks =
+          result.map((taskDto) => taskDto.toTask()).toList();
+
+      return DataSuccess(tasks);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
   }
 }
