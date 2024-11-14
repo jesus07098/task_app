@@ -31,6 +31,8 @@ migrate_working_dir/
 .pub/
 /build/
 
+
+/android/build/app/outputs/apk/debug/app-debug.apk
 # Symbolication related
 app.*.symbols
 
