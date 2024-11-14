@@ -10,9 +10,15 @@ import '../../domain/datasources/tasks_datasource.dart';
 
 class TasksDatasourceImpl implements TasksDatasource {
   @override
-  Future<DataState> createTask(TaskDto task) {
-    // TODO: implement createTask
-    throw UnimplementedError();
+  Future<DataState> createTask(TaskDto task) async {
+    try {
+      final result = await IsarPlugin.instance.writeTxn(() async {
+        await IsarPlugin.instance.tasks.put(Task(title: 'prueba', description: 'desc',  isCompleted: true));
+      });
+      return DataSuccess(result);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
   }
 
   @override
