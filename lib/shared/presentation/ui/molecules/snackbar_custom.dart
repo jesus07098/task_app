@@ -30,7 +30,7 @@ class SnackBarCustom {
         behavior: behavior,
         showCloseIcon: true,
         closeIconColor: ColorsFoundation.bgScaffold,
-        backgroundColor: AppColors.neutral300,
+        backgroundColor: AppColors.neutral50,
         content: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

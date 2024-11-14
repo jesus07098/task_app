@@ -51,6 +51,8 @@ class _MainScreenState extends State<MainScreen> {
             onPressed: () {
               context.showModalBottomSheetCustom(
                   widget: BlocConsumer<TaskBloc, TaskState>(
+                listenWhen: (previous, current) =>
+                    previous.formStatus != current.formStatus,
                 listener: (context, state) {
                   if (state.message == '') {
                     return;

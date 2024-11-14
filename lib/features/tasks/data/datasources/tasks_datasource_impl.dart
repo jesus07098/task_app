@@ -19,14 +19,25 @@ class TasksDatasourceImpl implements TasksDatasource {
     }
   }
 
-  @override
-  Future<void> deleteTaskById(String id) {
-    throw UnimplementedError();
-  }
+ 
 
   @override
   Future<List<TaskDto>> getTasks() async {
     List<TaskDto> tasks = await IsarPlugin.instance.taskDtos.where().findAll();
     return tasks;
   }
-}
+  
+//   @override
+//   Future<void> deleteTaskById(int id) async{
+ 
+//      try {
+//     await IsarPlugin.instance.writeTxn(() async {
+//         await IsarPlugin.instance.taskDtos
+//             .filter().idEqualTo(id)    
+//             .deleteFirst();
+//       });
+//     } catch (e) {
+//      // return DataFailed(e.toString());
+//     }
+  
+// }

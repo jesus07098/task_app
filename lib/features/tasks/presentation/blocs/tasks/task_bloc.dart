@@ -44,14 +44,36 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   Future<void> _onCreateTask(event, Emitter<TaskState> emit) async {
     if (state.allFieldValid) {
-      await _createTaskUseCase(
-          params: TaskDto(
-              title: state.title.value,
-              isCompleted: state.isCompleted,
-              description: state.description));
-      emit(state.copyWith(isFormPosted: true));
+      try {
+        emit(state.copyWith(
+            message: 'Nota creada!',
+            isFormPosted: true,
+            formStatus: FormzSubmissionStatus.initial));
+        await _createTaskUseCase(
+            params: TaskDto(
+                title: state.title.value,
+                isCompleted: state.isCompleted,
+                description: state.description));
+        emit(state.copyWith(
+            message: 'Nota creada exitosamente!',
+            isFormPosted: true,
+            formStatus: FormzSubmissionStatus.success));
+        _cleanFormFields(emit);
+      } catch (e) {
+        emit(state.copyWith(
+            message: 'Error al crear la nota...',
+            formStatus: FormzSubmissionStatus.failure));
+      }
     }
 
     add(OnGetTask());
+  }
+
+  void _cleanFormFields(Emitter<TaskState> emit) {
+    //Limpiar valores del form
+    emit(state.copyWith(
+        title: const TitleTask.pure(),
+        description: '',
+        formStatus: FormzSubmissionStatus.initial));
   }
 }

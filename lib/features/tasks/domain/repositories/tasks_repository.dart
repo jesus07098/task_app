@@ -5,6 +5,5 @@ import '../entities/task.dart';
 abstract class TasksRepository {
   Future<DataState<List<Task>>> getTasks();
   Future<DataState<Task>> createTask(TaskDto task);
-  Future<void> deleteTaskById(String id);
-  
+  Future<DataState<void>> deleteTaskById(int id);
 }
