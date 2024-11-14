@@ -3,6 +3,8 @@ import 'package:task_app/core/utils/extensions/context_extension.dart';
 import 'package:task_app/features/tasks/presentation/blocs/tasks/task_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_app/features/tasks/presentation/ui/molecules/draggable_header_general.dart';
+import 'package:task_app/shared/presentation/ui/atoms/textformfield_custom.dart';
+import 'package:task_app/shared/presentation/ui/atoms/textformfield_multiline.dart';
 
 import '../../../../../shared/presentation/ui/ui.dart';
 import '../atoms/label.dart';
@@ -45,9 +47,9 @@ class _MainScreenState extends State<MainScreen> {
             onPressed: () {
               context.showModalBottomSheetCustom(
                   widget: DraggableScrollableSheet(
-                      minChildSize: 0.5,
-                      initialChildSize: 0.5,
-                      maxChildSize: 0.5,
+                      minChildSize: 0.8,
+                      initialChildSize: 0.8,
+                      maxChildSize: 0.8,
                       expand: false,
                       builder: (context, scrollController) => const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,15 +63,21 @@ class _MainScreenState extends State<MainScreen> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: AppSizes.s16),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           LabelField(
-                                            text: 'Title',
+                                            text: 'Título',
                                             isRequiredField: true,
+                                          ),
+                                          TextFormFieldCustom(),
+                                          SizedBox(
+                                            height: AppSizes.s10,
                                           ),
                                           LabelField(
                                             text: 'Descripción',
-                                          )
+                                          ),
+                                           TextFormFieldArea(),
                                         ],
                                       ))),
                             ],

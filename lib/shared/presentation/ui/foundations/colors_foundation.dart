@@ -9,5 +9,7 @@ class ColorsFoundation {
   static const Color bgScaffold = AppColors.neutral50;
   static const Color bgDraggableSheet = AppColors.neutral100;
   static const Color dragHandle = AppColors.neutral300;
+  static const Color textFieldBorder = AppColors.neutral300;
+  static const Color bgTextField = AppColors.neutral100;
   static const Color statusDanger = AppColors.red500;
 }
